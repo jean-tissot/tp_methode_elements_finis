@@ -65,18 +65,27 @@ R = zeros(nddlt,1);
 plotdef(U)
 %----- format d'impression des vecteurs
 form =' %8.3e   %8.3e   %8.3e  '; format = [form(1:8*nddln),' \n']; 
-disp(' ');disp('------- deplacements nodaux sur (x,y,z) ----------');
+disp(' ');
+disp('------- deplacements nodaux sur (x,y,z) ----------');
 fprintf(format,U)         
-disp(' ');disp('------- Efforts aux appuis  ----------');
+disp(' ');
+disp('------- Efforts aux appuis  ----------');
 fprintf(format,R(:,1));
+
 [Rx,Ry,Rz] = feval('resultante',R);     %----- resultantes et reactions
 disp(' ');
 fprintf('La resultante des charges nodales    en (x,y,z) est : %8.3e   %8.3e   %8.3e \n',Fx,Fy,Fz);                    
 fprintf('La resultante des charges reparties  en (x,y,z) est : %8.3e   %8.3e   %8.3e \n',-Rx-Fx,-Ry-Fy,-Rz-Fz);
 fprintf('La resultante des efforts aux appuis en (x,y,z) est : %8.3e   %8.3e   %8.3e \n',Rx,Ry,Rz);
-disp(' ');disp('------- Contraintes sur les elements ----------');
+
+disp(' ');
+disp('------- Contraintes sur les elements ----------');
+
 for iel=1:nelt   
-    loce=[]; for i=1:nnode loce=[loce,(Connec(iel,i)-1)*nddln+[1:nddln]];end
+    loce=[];
+    for i = 1:nnode
+        loce=[loce,(Connec(iel,i)-1)*nddln + [1:nddln] ];
+    end
     Ue=U(loce);
     feval('poutre_stress',iel,Ue);
 end                     

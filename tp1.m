@@ -11,6 +11,10 @@ close all ; clc;
 global nddln nnod nddlt nelt nnode ndim ncld
 global Coord Connec Typel Nprop Prop Ncl Vcl F
 
+disp(' ');
+disp('structure etudiee : treillis du TP1');
+disp('==================');
+
 % ### VARIABLES DEPENDANT DU PROBLÈME (définition du maillage) ###
 h = 1.5e3; a = 3e3; b= 2e3; % en mm
 Fd=-950e3; % en N
@@ -27,13 +31,13 @@ Connec=[ 1 , 2 ;         % definition de la matrice de connectivite i , j
          2 , 3 ];
 
 % definition des caracteristiques mecaniques elementaires (ES fx fy)
-Nprop=[2;1;1];              % pour chaque element numero de la propriete
-Prop=[ E*S1 0 0 ;           % tableau des differentes valeurs de ES fx fy
+Nprop=[2;1;1];            % pour chaque element numero de la propriete
+Prop=[ E*S1 0 0 ;         % tableau des differentes valeurs de ES fx fy
        E*S2 0 0 ];
 
 % definition des CL en deplacement
-CL=[ 1 , 0 , 1 ;   % numero du noeud, type sur u et v (1 ddl impose ,0 ddl libre)
-     2 , 1 , 1 ];  % + ligne 3 , 0 , 0   inutile (car aucune contrainte sur le noeud 3)
+CL=[ 1 , 0 , 1 ;          % numero du noeud, type sur u et v (1 ddl impose ,0 ddl libre)
+     2 , 1 , 1 ];         % + ligne 3 , 0 , 0   inutile (car aucune contrainte sur le noeud 3)
 
 % definition des charges nodales
 Charg=[ 3  0  Fd ];                %  numero du noeud , Fx , Fy
@@ -41,16 +45,14 @@ Charg=[ 3  0  Fd ];                %  numero du noeud , Fx , Fy
 % definition du modele EF : type des elements
 Typel = ['barre_ke';'barre_ke';'barre_ke']
 
+% nombre de degrés de liberté par noeud
+nddln=2;
+
 
 % ### TRAITEMENT (indépendant du problème) ###
 
-disp(' ');
-disp('structure etudiee : treillis du TP1');
-disp('==================');
-
 % Traitement du nombre de noeud et de la connectivité
 [nnod,ndim]=size(Coord);    % nombre de noeuds / nombre de dimensions
-nddln=2;                    % nombre de degrés de liberté par noeud
 nddlt=nddln*nnod;           % nombre de degrés de liberté total
 [nelt,nnode]=size(Connec);  % nombre d'éléments / nombre de noeuds par élément
 
@@ -81,23 +83,22 @@ plotstr
 U = zeros(nddlt,1);
 R = zeros(nddlt,1);
 [U(:,1), R(:,1)] = statique;   %----- resolution du probleme - methode du terme unite sur la diagonale    
+plotdef(U)
 
 nouv_coord = Coord + transpose(reshape(U, size(Coord,2), size(Coord,1))) %calcul des nouvelles positions des noeuds                      
 
-
+%-----	post-traitement
 format = [strjoin({' %8.3e',' %8.3e',' %8.3e'}(1:nddln), '  '), ' \n']; %format d'impression des vecteurs
 
 disp(' ');
 disp('------- deplacements nodaux sur (x,y,z) ----------');
-fprintf(format,U)
-plotdef(U)                                      
+fprintf(format,U)                        
 
-%-----	post-traitement
 disp(' ');
 disp('------- Efforts aux appuis  ----------');
 fprintf(format,R(:,1));
-[Rx,Ry,Rz] = feval('resultante',R);     %----- resultantes et reactions
 
+[Rx,Ry,Rz] = feval('resultante',R);     %----- resultantes et reactions
 disp(' ');
 fprintf('La resultante des charges nodales    en (x,y,z) est : %8.3e   %8.3e   %8.3e \n', Fx, Fy, Fz);                    
 fprintf('La resultante des charges reparties  en (x,y,z) est : %8.3e   %8.3e   %8.3e \n', -Rx-Fx,-Ry-Fy, -Rz-Fz);

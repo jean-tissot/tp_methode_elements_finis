@@ -66,7 +66,7 @@ Ncl=zeros(1,nddlt);ncld=0;
 Vcl=zeros(1,nddlt);         % Valeurs imposees nulles
 for i=1:size(CL,1)
     for j=1:nddln 
-      if CL(i,1+j)==1 Ncl(1,(CL(i,1)-1)*nddln+j)=1;ncld=ncld+1; end
+      if CL(i,1+j)==1 Ncl(1,(CL(i,1)-1)*nddln+j)=1; ncld++; end
     end
 end
 
