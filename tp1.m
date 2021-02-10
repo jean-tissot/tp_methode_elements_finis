@@ -40,7 +40,7 @@ CL=[ 1 , 0 , 1 ;          % numero du noeud, type sur u et v (1 ddl impose ,0 dd
      2 , 1 , 1 ];         % + ligne 3 , 0 , 0   inutile (car aucune contrainte sur le noeud 3)
 
 % definition des charges nodales
-Charg=[ 3  0  Fd ];                %  numero du noeud , Fx , Fy
+Charg=[ 3  0  Fd ];       % numero du noeud , Fx , Fy
 
 % definition du modele EF : type des elements
 Typel = ['barre_ke';'barre_ke';'barre_ke']
