@@ -20,8 +20,9 @@ disp('==================');
 % ### VARIABLES DEPENDANT DU PROBLÈME (définition du maillage) ###
 nelt=10 % nombre d'élélément de découpe de la poutre -> doit être un nombre pair
 
-l=1       % demi-longueur de la poutre (en m)
-f=1e3     % force linéique en N/m
+l=0.5       % demi-longueur de la poutre (en m)
+f=10e3     % force linéique en N/m
+EI=1
 
 Coord=[]; 
 for j=0:nelt
@@ -30,32 +31,30 @@ end
 
 Connec=[];
 for j=1:nelt
-  Connec=[Connec;[j j+1]];      % chaque element j est relié à l'élément j-1 et à l'élément j+1
+  Connec=[Connec;[j j+1]];    % chaque element j est relié à l'élément j-1 et à l'élément j+1
 end
 
 % definition des caracteristiques mecaniques elementaires (EI f)  (en 1D)
-Nprop = ones(nelt);       % pour chaque element numero de la propriete
-Prop=[ 1 -384 ];          % tableau des differentes valeurs de EI fy   
+Nprop = ones(1,nelt);           % pour chaque element numero de la propriete
+Prop=[EI f]                   % -- Propriété 1 pour la deuxième moitié de la poutre
+
+for i = 1:nelt/2
+  x1=Coord(i, 1);             % abscisse gauche de l'élément i
+  x2=Coord(i+1, 1);           % abscisse droite de l'élément i
+  f_i = (f*x1/l + f*x2/l)/2;  % moyenne de la force linéique sur l'élément i
+
+  Prop = [Prop; EI f_i];      % -- Propriété i+1 pour l'élément i de la première moitié de la poutre
+  Nprop(i) = i+1;
+end
 
 % definition des CL en deplacement
-CL=[ 1 ,        1 , 1 ;         % numero du noeud, type sur u et v (1 ddl impose ,0 ddl libre)
+CL=[ 1 ,        1 , 1 ;       % numero du noeud, type sur v et theta (1 ddl impose ,0 ddl libre)
      1+nelt/2 , 1 , 0 ;
      1+nelt ,   1 , 0 ];
 
-%Charges: on suppose qu'au niveau du noeud i s'applique une force égale à la somme des forces exercées sur l'élément i-1
+%Charges nodales: aucune
+charg=[] 
 
-charg=[]
-for i = 1:nelt
-  x1=Coord(i, 1);   % abscisse gauche de l'élément i
-  x2=Coord(i+1, 1); % abscisse droite de l'élément i
-  if i < 1+nelt/2   % -- Dans la première moitié de la poutre la force augmente linéairement de 0 à f
-    f_elem = (f*x1/l + f*x2/l)/2;   % moyenne de la force linéique sur l'élément i
-  else              % -- Dans la deuxième moitié de la poutre la force linéique est constante et égale à f
-    f_elem = f;
-  end
-  Fd = (x2-x1)*f;   % longueur de l'élément i * moyenne des forces linéiques
-  Charg=[ charg; i+1 , 0 , Fd ];    % numero du noeud , Fx , Fy
-end
 
 % definition du modele EF : type des elements
 Typel = 'poutre_ke';    
@@ -128,6 +127,5 @@ end
 reponse = input('Voulez-vous comparer avec la solution analytique? O/N [O]: ','s');
 if isempty(reponse) | reponse =='O'
  feval('poutre_compar',U); %----- comparaison avec la solution analytique
- end                                               
-clear all
+end                                               
 return
