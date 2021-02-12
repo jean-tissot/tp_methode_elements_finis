@@ -6,10 +6,10 @@
 - Exécuter la commande `run tp1-treillis` pour exécuter la partie treillis du tp, ou `run tp1-poutre` pour la partie sur la poutre
 
 ## Compte-rendu
-Chaque fichier (treillis et poutre) a été découpé en deux parties distinctes:
+Chaque fichier (treillis et poutre) a été découpé en deux parties:
 - La définition des variables propres au problèmes
 - La résolution du problème
-### TP1 - treillis
+#### TP1 - treillis
 - Définition des variables propres au problèmes
     - Dimensions
     - Coordonnées
@@ -28,7 +28,7 @@ Chaque fichier (treillis et poutre) a été découpé en deux parties distinctes
         - Affichage des valeurs numériques des différents déplacements / efforts calculés
         - Affichage des contraintes dans les différents éléments et calcul des charges critiques (élastique et de flambement)
 
-### TP1 - poutre
+#### TP1 - poutre
 - Définition des variables propres au problèmes
     - Dimensions - nombre d'éléments choisis pour découper la poutre (modélisation numérique)
     - Coordonnées
