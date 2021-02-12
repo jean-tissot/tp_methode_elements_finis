@@ -18,7 +18,7 @@ disp('structure etudiee : poutre de l''exercice de cours exo15');
 disp('==================');
 
 % ### VARIABLES DEPENDANT DU PROBLÈME (définition du maillage) ###
-nelt=10 % nombre d'élélément de découpe de la poutre -> doit être un nombre pair
+nelt=20 % nombre d'élélément de découpe de la poutre -> doit être un nombre pair
 
 l=0.5       % demi-longueur de la poutre (en m)
 f=10e3     % force linéique en N/m
@@ -124,8 +124,5 @@ for iel=1:nelt          %----- boucle sur les elements
   feval('poutre_stress',iel,Ue);
 end
 
-reponse = input('Voulez-vous comparer avec la solution analytique? O/N [O]: ','s');
-if isempty(reponse) | reponse =='O'
- feval('poutre_compar',U); %----- comparaison avec la solution analytique
-end                                               
+feval('poutre_compar',U); %----- comparaison avec la solution analytique                                     
 return
