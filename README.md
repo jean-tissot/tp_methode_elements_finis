@@ -14,13 +14,13 @@ Chaque fichier (treillis et poutre) a été découpé en deux parties:
     - Dimensions
     - Coordonnées
     - Matrice de connectivité
-    - Caractéristiques mécaniques élémentaires des matériaux / forces linéiques (aucunes ici)
+    - Caractéristiques mécaniques élémentaires des matériaux / forces linéiques (aucune ici)
     - Conditions aux limites en déplacement
-    - Charges nodales (1 Force F appliquée sur la treillis)
+    - Charges nodales (1 force F appliquée sur la treillis)
     - Type de chaque élément (barre)
 - Résolution du problème
     - Extraction des données définie dans la première partie
-        - Récupération du nombre de noeuds / dimensions / degrés de liberté / éléments / noeuds par éléments
+        - Récupération du nombre de noeuds / dimensions / degrés de liberté / éléments / noeuds par élément
         - Récupération des déplacements imposés, de leurs valeurs et de leur nombre
         - Récupération des charges nodales
     - Résolution du problème et traçage du maillage
@@ -35,7 +35,7 @@ Chaque fichier (treillis et poutre) a été découpé en deux parties:
     - Matrice de connectivité
     - Caractéristiques mécaniques élémentaires des matériaux / forces linéiques
     - Conditions aux limites en déplacement
-    - Charges nodales (aucunes ici)
+    - Charges nodales (aucune ici)
     - Type de chaque élément (poutre)
 - Résolution du problème
     - Extraction des données définie dans la première partie
@@ -46,4 +46,4 @@ Chaque fichier (treillis et poutre) a été découpé en deux parties:
     - Post-traitement
         - Affichage des valeurs numériques des différents déplacements / efforts calculés
         - Affichage des contraintes dans les différents éléments
-        - Tracé des momments de flexions / efforts tranchants (solution analytique)
+        - Tracé des momments de flexion / efforts tranchants (solution analytique)
