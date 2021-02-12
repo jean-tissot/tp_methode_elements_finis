@@ -57,13 +57,13 @@ nddlt=nddln*nnod;           % nombre de degrés de liberté total
 [nelt,nnode]=size(Connec);  % nombre d'éléments / nombre de noeuds par élément
 
 % Traitement des CL
-Ncl=zeros(1,nddlt); ncld=0;  %Ncl: 1 si le de déplacement champ est imposé
-Vcl=zeros(1,nddlt);          % Valeurs des deplacements imposes
+Ncl=zeros(1,nddlt); ncld=0;  % Ncl: 1 si le de déplacement champ est imposé
+Vcl=zeros(1,nddlt);          % Valeurs des deplacements imposes (toutes nulles)
 for i=1:size(CL,1)
-   for j=1:nddln 
-       if CL(i,1+j)==1 
+   for j=1:nddln
+       if CL(i,1+j)==1
            Ncl(1,(CL(i,1)-1)*nddln+j)=1;
-           ncld++; 
+           ncld++;
        end
    end
 end
@@ -79,10 +79,11 @@ end
 [Fx,Fy,Fz] = feval('resultante',F);      %----- resultante des charges nodales
 
 % Trace du maillage pour validation des donnees 
-plotstr                      
+plotstr
+%----- resolution du probleme - methode du terme unite sur la diagonale                   
 U = zeros(nddlt,1);
 R = zeros(nddlt,1);
-[U(:,1), R(:,1)] = statique;   %----- resolution du probleme - methode du terme unite sur la diagonale    
+[U(:,1), R(:,1)] = statique;
 plotdef(U)
 
 nouv_coord = Coord + transpose(reshape(U, size(Coord,2), size(Coord,1))) %calcul des nouvelles positions des noeuds                      

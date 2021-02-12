@@ -74,17 +74,20 @@ nddlt=nddln*nnod;
 nnode = 2; % nelt, nnode = size(Connec)  - nnode=2 car chaque poutre a 2 noeuds
 
 % Traitement des CL
-Ncl=zeros(1,nddlt);ncld=0;
-Vcl=zeros(1,nddlt);         % Valeurs imposees nulles
+Ncl=zeros(1,nddlt);ncld=0;  % Ncl: 1 si le de déplacement champ est imposé
+Vcl=zeros(1,nddlt);         % Valeurs des deplacements imposes (toutes nulles)
 for i=1:size(CL,1)
     for j=1:nddln 
-      if CL(i,1+j)==1 Ncl(1,(CL(i,1)-1)*nddln+j)=1; ncld++; end
+      if CL(i,1+j)==1
+        Ncl(1,(CL(i,1)-1)*nddln+j)=1;
+        ncld++;
+      end
     end
 end
 
 
-% definition des charges nodales
-F=zeros(nddlt,1);	   
+% Traitement des charges nodales
+F=zeros(nddlt,1);
 [Fx,Fy,Fz] = feval('resultante',F); 
 
 % trace du maillage pour validation des donnees
