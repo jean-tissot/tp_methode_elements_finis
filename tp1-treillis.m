@@ -136,7 +136,7 @@ end
 
 % Le calcul étant linéaire on peut en déduire la charge limite élastique et la charge limite de flambement
 Fmax_elastique = Fd *  Re / max_abs_contrainte;
-Fmax_euler = Fd / max_abs_rapport_Ne_Fc
+Fmax_euler = Fd / max_abs_rapport_Ne_Fc;
 
 fprintf('force maximale admissible quant à l''élasticité: %0.4e\n', Fmax_elastique)
 fprintf('force maximale admissible quant au flambement: %0.4e\n', Fmax_euler)

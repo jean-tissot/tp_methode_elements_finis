@@ -18,7 +18,7 @@ disp('structure etudiee : poutre de l''exercice de cours exo15');
 disp('==================');
 
 % ### VARIABLES DEPENDANT DU PROBLÈME (définition du maillage) ###
-nelt=20 % nombre d'élélément de découpe de la poutre -> doit être un nombre pair
+nelt=6 % nombre d'élélément de découpe de la poutre -> doit être un nombre pair
 
 l=0.5       % demi-longueur de la poutre (en m)
 f=10e3     % force linéique en N/m
