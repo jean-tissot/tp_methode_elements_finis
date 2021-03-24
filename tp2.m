@@ -48,17 +48,17 @@ for i=1:size(CL,1)
    end
 end
 
-%Charg=[nnod , -Mf/h, 0 ; nnod-ney, Mf/h, 0];     % definition des charges nodales
-somme_bras_de_levier = 0;
-bras_de_levier_elementaire = h/ney;
-for i=1:ney/2
-    somme_bras_de_levier += 2*bras_de_levier_elementaire*i;
-end
-f_lineique = (Mf/somme_bras_de_levier)/h;
-Charg = [];
-for i=0:ney-1
-    Charg = [Charg; [nnod-ney+i, f_lineique*(ney/2 - i)*bras_de_levier_elementaire, 0]];
-end
+Charg=[nnod , -Mf/h, 0 ; nnod-ney, Mf/h, 0];     % definition des charges nodales
+% somme_bras_de_levier = 0;
+% bras_de_levier_elementaire = h/ney;
+% for i=1:ney/2
+%     somme_bras_de_levier += 2*bras_de_levier_elementaire*i;
+% end
+% f_lineique = (Mf/somme_bras_de_levier)/h;
+% Charg = [];
+% for i=0:ney-1
+%     Charg = [Charg; [nnod-ney+i, f_lineique*(ney/2 - i)*bras_de_levier_elementaire, 0]];
+% end
 
 F=zeros(nddlt,1);	 
 for iclf=1:size(Charg,1)           
@@ -147,7 +147,7 @@ plot(Tv,Uv,'r');
 figure('Name','Contraintes max sigxx 2D-Q4 (rouge) / poutre (bleu)')   
 hold on,
 % La contrainte sigxx poutre est calculee au centre des elements de la rangee du bas
-x=0:L; y=Mf*h*(1-1/ney)*x/(2*I); plot(x,y,'b'),
+x=0:L; y=Mf*(1-1/ney)*x/(2*I); plot(x,y,'b');
 dx=L/(10*nex);
 for i=1:nex      %contrainte sigxx sur les elements de la rangee du bas
     x1=(i-1)*L/nex ; x2 = i*L/nex ;  
