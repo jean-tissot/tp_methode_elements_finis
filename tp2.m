@@ -16,6 +16,8 @@ if isempty(nex) nex=5; end
 ney = input('donner le nombre d''element en y (hauteur) ? [4]: ');
 if isempty(ney) ney=4; end  
 
+file_ext = strcat("_" , int2str(nex) , "_" , int2str(ney) , ".png");
+
 Coord=[];                                               %maillage
     for i=0:nex
         for j=0:ney Coord=[Coord;[i*L/nex  j*h/ney]];end 
@@ -75,6 +77,7 @@ disp('Les variables globales sont initialisees');
 disp('Fin de lecture des donnees');
 close all
 plotstr  % trac� du maillage pour validation des donn�es 
+saveas(1, strcat("tp2-results/maillage",file_ext));
 disp(' ');
 disp('Elasticite plane  : Plaque en contrainte plane modelisee en Q4');
 disp('==================');
@@ -87,6 +90,7 @@ form =' %8.3e   %8.3e   %8.3e  '; format = [form(1:8*nddln),' \n'];
 disp(' ');disp('------- deplacements nodaux sur (x,y,z) ----------');
 %fprintf(format,U)
 plotdef(U)
+saveas(2, strcat("tp2-results/déformée_structure",file_ext));
                                         %-----	post-traitement
 disp(' ');disp('------- Efforts aux appuis  ----------');
 %fprintf(format,R(:,1));
@@ -115,6 +119,7 @@ for iel=1:nelt          %----- boucle sur les �l�ments
 end
 figure('Name',"contraintes")
 plot_sig(VM)  
+saveas(3, strcat("tp2-results/contraintes",file_ext));
 
 % comparaison avec la solution poutre
 I=e*h^3/12; EI=E*I ;        % solution poutre
@@ -143,6 +148,7 @@ hold on
 Uv=U([2:2*(ney+1):2*(nex+1)*(ney+1)]);
 Tv=linspace(0,L,size(Uv,1));
 plot(Tv,Uv,'r');
+saveas(4, strcat("tp2-results/comparaison_des_flèches",file_ext));
 
 figure('Name','Contraintes max sigxx 2D-Q4 (rouge) / poutre (bleu)')   
 hold on,
@@ -155,4 +161,4 @@ for i=1:nex      %contrainte sigxx sur les elements de la rangee du bas
     x=x1:dx:x2; y=sign*x/x; plot(x,y,'r'),
 end
 grid
-
+saveas(5, strcat("tp2-results/contraintes_max",file_ext));
