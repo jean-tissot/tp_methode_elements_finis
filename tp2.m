@@ -12,11 +12,13 @@ poid = 100;
 
 %nex=8; ney=4;                  % definition du maillage
 nex = input('donner le nombre d''element en x (longueur) ? [5]: ');
-if isempty(nex) nex=5; end  
+if isempty(nex) nex=5; end
 ney = input('donner le nombre d''element en y (hauteur) ? [4]: ');
-if isempty(ney) ney=4; end  
+if isempty(ney) ney=4; end
+is_charg_reparties = input('répartir le moment sur tous les noeuds (y/n) ? [y]: ', "s");
+if is_charg_reparties=='n' is_charg_reparties = false; file_ext = "_charges_non_reparties_"; else is_charg_reparties = true; file_ext = "_charges_reparties_"; end
 
-file_ext = strcat("_" , int2str(nex) , "_" , int2str(ney) , ".png");
+file_ext = strcat(file_ext , int2str(nex) , "_" , int2str(ney) , ".png");
 
 Coord=[];                                               %maillage
     for i=0:nex
@@ -50,17 +52,25 @@ for i=1:size(CL,1)
    end
 end
 
-Charg=[nnod , -Mf/h, 0 ; nnod-ney, Mf/h, 0];     % definition des charges nodales
-% somme_bras_de_levier = 0;
-% bras_de_levier_elementaire = h/ney;
-% for i=1:ney/2
-%     somme_bras_de_levier += 2*bras_de_levier_elementaire*i;
-% end
-% f_lineique = (Mf/somme_bras_de_levier)/h;
-% Charg = [];
-% for i=0:ney-1
-%     Charg = [Charg; [nnod-ney+i, f_lineique*(ney/2 - i)*bras_de_levier_elementaire, 0]];
-% end
+% definition des charges nodales
+if is_charg_reparties
+
+    % Fi = i*F1  -> Mi = i*f*i*h0 = f.h0.i²
+    % M = 2*somme(Mi) pour i allant de 1 à p = 2*f*h0*p*(p+1)*(2p+1)/6 = f.h0.p.(p+1).(2p+1)/3
+    % f = 3M/(h0.p.(p+1).(2p+1))
+
+    p = ney/2
+    h0 = h/ney
+    f = 3*Mf/(h0*p*(p+1)*(2*p+1))
+
+    Charg = [];
+    for i=1:p
+        Charg = [Charg; [nnod-p+i, -f*i, 0]; [nnod-p-i, f*i, 0]];
+    end
+
+else
+    Charg=[nnod , -Mf/h, 0 ; nnod-ney, Mf/h, 0];
+end
 
 F=zeros(nddlt,1);	 
 for iclf=1:size(Charg,1)           
@@ -153,7 +163,7 @@ saveas(4, strcat("tp2-results/comparaison_des_flèches",file_ext));
 figure('Name','Contraintes max sigxx 2D-Q4 (rouge) / poutre (bleu)')   
 hold on,
 % La contrainte sigxx poutre est calculee au centre des elements de la rangee du bas
-x=0:L; y=Mf*(1-1/ney)*x/(2*I); plot(x,y,'b');
+x=0:L; y=Mf*h*(1-1/ney)*x/(2*I*L); plot(x,y,'b');
 dx=L/(10*nex);
 for i=1:nex      %contrainte sigxx sur les elements de la rangee du bas
     x1=(i-1)*L/nex ; x2 = i*L/nex ;  
